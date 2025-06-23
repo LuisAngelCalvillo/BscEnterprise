@@ -1,0 +1,83 @@
+USE [bsc-enterprise-dev];
+
+GO
+
+BEGIN TRY
+	BEGIN TRANSACTION
+
+	CREATE TABLE Tb_Role(
+		IdRole INT IDENTITY(1,1) NOT NULL,
+		[Name] VARCHAR(50) NOT NULL,
+		IsActive BIT NOT NULL DEFAULT 1,
+
+		CONSTRAINT [PK_IdRole] PRIMARY KEY CLUSTERED ([IdRole] ASC)
+	);
+
+	CREATE TABLE Tb_Permission(
+		IdPermission INT IDENTITY(1,1) NOT NULL,
+		[Name] VARCHAR(50) NOT NULL,
+		IsActive BIT NOT NULL DEFAULT 1,
+
+		CONSTRAINT [PK_IdPermission] PRIMARY KEY CLUSTERED ([IdPermission] ASC)
+	);
+
+	CREATE TABLE Tb_RolePermission(
+		RoleId INT NOT NULL,
+		PermissionId INT NOT NULL,
+
+		CONSTRAINT [FK_Tb_RolePermission_Role] FOREIGN KEY (RoleId) REFERENCES Tb_Role(IdRole),
+		CONSTRAINT [FK_Tb_RolePermission_Permission] FOREIGN KEY (PermissionId) REFERENCES Tb_Permission(IdPermission)
+	);
+
+	CREATE TABLE Tb_User(
+		IdUser INT IDENTITY(1,1) NOT NULL,
+		Email VARCHAR(320) NOT NULL UNIQUE,
+		[Name] VARCHAR(100) NOT NULL,
+		LastName VARCHAR(100) NOT NULL,
+		[Password] VARCHAR(100) NOT NULL,
+		IsActive BIT NOT NULL DEFAULT 1,
+		RoleId INT NOT NULL,
+
+		CONSTRAINT [PK_IdUser] PRIMARY KEY CLUSTERED ([IdUser] ASC),
+		CONSTRAINT [FK_Tb_User_Role] FOREIGN KEY (RoleId) REFERENCES Tb_Role(IdRole)
+	);
+
+	DROP TABLE Tb_Order(
+		IdOrder INT IDENTITY(1,1) NOT NULL,
+		OrderNumber VARCHAR(100) NOT NULL,
+		CustomerName VARCHAR(100) NOT NULL,
+		[Date] DATETIME NOT NULL DEFAULT GETDATE(),
+	
+		CONSTRAINT [PK_IdOrder] PRIMARY KEY CLUSTERED ([IdOrder] ASC),
+	);
+
+	CREATE TABLE Tb_Product(
+		IdProduct INT IDENTITY(1,1) NOT NULL,
+		ProductKey VARCHAR(100) NOT NULL UNIQUE,
+		[Name] VARCHAR(50) NOT NULL,
+		Stock INT NOT NULL CHECK(Stock >= 0),
+		IsActive BIT DEFAULT 1,
+
+		CONSTRAINT [PK_IdProduct] PRIMARY KEY CLUSTERED ([IdProduct] ASC)
+	);
+
+	CREATE TABLE Tb_DetailOrder(
+		IdDetailOrder INT IDENTITY(1,1) NOT NULL,
+		Quantity INT NOT NULL CHECK(Quantity >= 0),
+		ProductId INT NOT NULL,
+		OrderId INT NOT NULL,
+
+		CONSTRAINT [PK_IdDetailOrder] PRIMARY KEY CLUSTERED ([IdDetailOrder] ASC),
+		CONSTRAINT [FK_Tb_DetailOrder_Product] FOREIGN KEY (ProductId) REFERENCES Tb_Product(IdProduct),
+		CONSTRAINT [FK_Tb_DetailOrder_Order] FOREIGN KEY (OrderId) REFERENCES Tb_Order(IdOrder)
+	);
+	PRINT 'Se crearon las tablas de forma correcta';
+	COMMIT TRANSACTION;
+END TRY
+BEGIN CATCH
+	PRINT ERROR_MESSAGE() ;
+	ROLLBACK TRANSACTION;
+END CATCH
+
+ALTER TABLE Tb_Order
+	DROP INDEX IX01_Tb_Order_User
