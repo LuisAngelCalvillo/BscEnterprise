@@ -43,8 +43,12 @@ export class LoginComponent {
   login() {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe((response: ResponseDataDto) => {
-        localStorage.setItem('jwt', response.data);
-        this.router.navigate(['/validate']);
+        if(response.completed){
+          localStorage.setItem('jwt', response.data);
+          this.router.navigate(['/validate']);
+        }else{
+          alert(response.message);
+        }
       })
     } else {
       this.loginForm.markAllAsTouched();

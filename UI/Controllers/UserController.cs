@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
+using UI.Authorization;
 
 namespace UI.Controllers
 {
@@ -13,6 +14,7 @@ namespace UI.Controllers
         private readonly IUserService _userService = userService;
 
         [HttpPost("create")]
+        [PermissionAuthorize("User.Create")]
         public async Task<IActionResult> Create([FromBody] CreateUserDto user)
         {
             ResponseDto response = new();

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Shared.DTOs;
-using Logic.Interfaces;
+﻿using Logic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs;
+using UI.Authorization;
 
 namespace UI.Controllers
 {
@@ -13,6 +14,7 @@ namespace UI.Controllers
         private readonly IReportService _reportService = reportService;
 
         [HttpGet("Product")]
+        [PermissionAuthorize("Product.Report")]
         public async Task<IActionResult> ReportProducts()
         {
             ResponseDataDto<byte[]> response = new();

@@ -34,7 +34,7 @@ namespace Logic.Services
             {
                 response.Data = null;
                 response.Message = $"La contraseña fue incorrecta para el usuario con correo: {user.Email}.";
-                response.Completed = true;
+                response.Completed = false;
                 return response;
             }
 
@@ -43,7 +43,7 @@ namespace Logic.Services
             {
                 response.Data = null;
                 response.Message = "El usuario no tiene permisos asignados.";
-                response.Completed = true;
+                response.Completed = false;
                 return response;
             }
 

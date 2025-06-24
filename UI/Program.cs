@@ -2,12 +2,13 @@ using DataAccess.Interfaces;
 using DataAccess.Repositories;
 using Logic.Interfaces;
 using Logic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Dictionaries;
 using Shared.Utilities;
 using System.Data;
 using System.Text;
+using UI.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,34 @@ builder.Services.AddAuthentication("Bearer")
             )
         };
     });
+
+//Autorizacion por permisos
+builder.Services.AddAuthorization(options =>
+{
+    var permissions = new[] {
+        "User.Create",
+        "User.View",
+        "User.Update",
+        "User.Delete",
+        "Product.Create",
+        "Product.View",
+        "Product.Update",
+        "Product.Delete",
+        "Product.Report",
+        "Order.Create",
+        "Order.View",
+        "Order.Update",
+        "Order.Delete"
+    };
+
+    foreach (var permission in permissions)
+    {
+        options.AddPolicy($"Permission:{permission}", policy =>
+            policy.Requirements.Add(new PermissionRequirement(permission)));
+    }
+});
 builder.Services.AddAuthorization();
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionHandler>();
 
 // Repositorios y servicios
 builder.Services.AddScoped<UtilitiesHelper>();

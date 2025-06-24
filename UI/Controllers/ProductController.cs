@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
+using UI.Authorization;
 
 namespace UI.Controllers
 {
@@ -13,6 +14,7 @@ namespace UI.Controllers
         private readonly IProductService _productService = productService;
 
         [HttpGet("getall")]
+        [PermissionAuthorize("Product.View")]
         public async Task<IActionResult> GetAll()
         {
             ResponseDataDto<List<ProductDto>> response = new();
@@ -25,6 +27,7 @@ namespace UI.Controllers
         }
 
         [HttpPost("create")]
+        [PermissionAuthorize("Product.Create")]
         public async Task<IActionResult> Create(ProductDto product) 
         {
             ResponseDto response = new();

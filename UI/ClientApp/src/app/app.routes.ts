@@ -4,32 +4,37 @@ import { AuthGuard } from './guards/auth.guard';
 import { AdminComponent } from './business/admin/admin.component';
 import { StaffComponent } from './business/staff/staff.component';
 import { SellerComponent } from './business/seller/seller.component';
-import { EmptyComponent } from './business/empty/empty.component';
+import { ValidateComponent } from './business/validate/validate.component';
 
 export const routes: Routes = [
     {
         path:'validate',
-        canActivate: [AuthGuard],
-        component: EmptyComponent
+        component: ValidateComponent
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
     },
     {
         path: 'admin',
-        component: AdminComponent
+        component: AdminComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador'] }
     },
     {
         path: 'staff',
-        component: StaffComponent
+        component: StaffComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Personal'] }
     },
     {
         path: 'seller',
-        component: SellerComponent
+        component: SellerComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Vendedor'] }
     },
     {
         path: '**',
-        redirectTo: 'validate'
+        redirectTo: 'login'
     }
 ];

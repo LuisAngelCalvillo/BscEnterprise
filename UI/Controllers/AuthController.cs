@@ -18,11 +18,6 @@ namespace UI.Controllers
             ResponseDataDto<string> response = new();
             response = await _authService.LoginAsync(request.Email, request.Password);
 
-            if (!response.Completed)
-                return NotFound(response);
-            if (response.Data == null)
-                return Unauthorized(response);
-
             return Ok(response);
         }
     }

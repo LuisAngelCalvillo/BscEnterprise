@@ -61,7 +61,8 @@ export class AdminComponent implements OnInit {
     this.userService.createUser(user).subscribe({
       next: (response) => {
         if (response.completed) {
-          console.log(response.message)
+          alert(response.message)
+          this.registerForm.reset();
         } else {
           console.error('Error obteniendo productos:', response.message);
         }
