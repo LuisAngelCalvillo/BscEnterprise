@@ -1,0 +1,102 @@
+<div class="card-btn">
+    <p-button label="Reporte de productos" icon="pi pi-shopping-cart" iconPos="left" (click)="generateProductReport()"/>
+    <p-button label="Crear producto" icon="pi pi-shopping-cart" iconPos="left" (click)="showCreateProduct()"/>
+</div>
+<div class="card">
+    <p-table [value]="orders" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template #header>
+            <tr>
+                <th>Disponible</th>
+                <th>Clave</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Accion</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-order>
+            <tr>
+                <td>{{ order.idOrder }}</td>
+                <td>{{ order.orderNumber }}</td>
+                <td>{{ order.customerName }}</td>
+                <td>
+                    {{ order.orderDate | date: 'dd/MM/yyyy' }}
+                </td>
+                <td>
+                    <button pButton type="button" icon="pi pi-eye" class="p-button-rounded p-button-text"
+                            (click)="showOrder(order.idOrder)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="showOrderDialog" [modal]="true" [style]="{ width: '60rem' }" [maximizable]="true">
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Detalle de pedido</span>
+        </div>
+    </ng-template>
+        <p-table [value]="orderDetails" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template #header>
+                <tr>    
+                    <th>Clave</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-orderDetail>
+                <tr>
+                    <td>{{ orderDetail.productKey }} pz</td>
+                    <td>{{ orderDetail.name }}</td>
+                    <td>{{ orderDetail.quantity }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    <ng-template #footer>
+        <p-button label="Cerrar" [text]="true" severity="secondary" (click)="this.showOrderDialog = false" />
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="showProductDialog" [modal]="true" [style]="{ width: '25rem' }">
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Crear producto</span>
+        </div>
+    </ng-template>
+    <div class="product-wrapper">
+        <div class="card login-card">
+            <form [formGroup]="productForm" (ngSubmit)="createProduct()" id="productForm">
+                <div class="p-fluid">
+                    <div class="field-login">
+                        <label for="productKey">Clave del producto</label>
+                        <input id="productKey" type="text" pInputText formControlName="productKey"/>
+                        <small class="p-error" *ngIf="productKey?.touched && productKey?.invalid">
+                        {{ productKey?.errors?.['required'] ? 'La clave es requerida' : '' }}
+                        </small>
+                    </div>
+
+                    <div class="field-login">
+                        <label for="name">Nombre del producto</label>
+                        <input id="name" type="text" pInputText formControlName="name"/>
+                        <small class="p-error" *ngIf="name?.touched && name?.invalid">
+                        {{ name?.errors?.['required'] ? 'El nombre es requerido' : '' }}
+                        </small>
+                    </div>
+
+                    <div class="field-login">
+                        <label for="stock">Cantidad</label>
+                        <p-inputnumber inputId="integeronly" formControlName="stock" [min]="1" [max]="9999"/>
+                        <small class="p-error" *ngIf="stock?.touched && stock?.invalid">
+                        {{ stock?.errors?.['required'] ? 'La cantidad es requerida' : '' }}
+                        </small>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <ng-template #footer>
+        <p-button label="Cancelar" [text]="true" severity="secondary" (click)="showCreateProduct()" />
+        <button pButton type="submit" label="Crear" [disabled]="productForm.invalid" class="w-full" form="productForm"></button>
+    </ng-template>
+</p-dialog>

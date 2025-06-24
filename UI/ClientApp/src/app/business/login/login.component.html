@@ -1,0 +1,32 @@
+<div class="login-wrapper">
+    <div class="card login-card">
+        <h2 class="text-center">Iniciar Sesión</h2>
+
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <div class="p-fluid">
+                <div class="field-login">
+                    <label for="email">Correo electrónico</label>
+                    <input id="email" type="email" pInputText formControlName="email"/>
+                    <small class="p-error" *ngIf="email?.touched && email?.invalid">
+                    {{ email?.errors?.['required'] ? 'El correo es obligatorio' : '' }}
+                    {{ email?.errors?.['email'] ? 'Correo no válido' : '' }}
+                    </small>
+                </div>
+
+                <div class="field-login">
+                    <label for="password">Contraseña</label>
+                    <p-password id="password" formControlName="password" toggleMask ></p-password>
+                    <small class="p-error" *ngIf="password?.touched && password?.invalid">
+                    {{ password?.errors?.['required'] ? 'La contraseña es obligatoria' : '' }}
+                    {{ password?.errors?.['pattern'] ? 'Debe contener min. 8 caracteres, mayúsculas, minúsculas, números y símbolos' : '' }}
+                    </small>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button pButton type="submit" label="Entrar" [disabled]="loginForm.invalid"
+                        class="w-full"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TRIGGER [dbo].[tr_Product_UpdateStock]
-ON [dbo].[Tb_CartItem]
+ON [dbo].[Tb_DetailOrder]
 
 AFTER INSERT
 AS

@@ -1,0 +1,73 @@
+<div class="card-btn">
+    <p-button label="Carrito" icon="pi pi-shopping-cart" iconPos="left" (click)="showCart()"/>
+</div>
+<div class="card">
+    <p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template #header>
+            <tr>
+                <th>Disponible</th>
+                <th>Clave</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Accion</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-product>
+            <tr>
+                <td>{{ product.stock }} pz</td>
+                <td>{{ product.productKey }}</td>
+                <td>{{ product.name }}</td>
+                <td>
+                    <p-inputnumber [(ngModel)]="product.selectedQuantity" [min]="0" [max]="product.stock" [showButtons]="true" buttonLayout="horizontal" spinnerMode="horizontal" inputId="horizontal" [inputStyle]="{ width: '3rem' }">
+                        <ng-template #incrementbuttonicon>
+                            <span class="pi pi-plus"></span>
+                        </ng-template>
+                        <ng-template #decrementbuttonicon>
+                            <span class="pi pi-minus"></span>
+                        </ng-template>
+                    </p-inputnumber>
+                </td>
+                <td>
+                    <button pButton type="button" icon="pi pi-plus" class="p-button-rounded p-button-text"
+                            (click)="addToOrder(product)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="showCartDialog" [modal]="true" [style]="{ width: '60rem' }" [maximizable]="true">
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Carrito</span>
+        </div>
+    </ng-template>
+        <div class="field-login">
+            <label for="email">Nombre del cliente:</label>
+            <input type="text" pInputText [(ngModel)]="customerName" />
+        </div>
+        <p-divider />
+        <p-table [value]="orderPrev" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template #header>
+                <tr>    
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Accion</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-order>
+                <tr>
+                    <td>{{ order.productName }} pz</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>
+                        <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-text"
+                                (click)="removeFromOrder(order.productId)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    <ng-template #footer>
+        <p-button label="Cancelar" [text]="true" severity="secondary" (click)="showCart()" />
+        <p-button label="Realizar pedido" severity="primary" (click)="submitOrder()" />
+    </ng-template>
+</p-dialog>

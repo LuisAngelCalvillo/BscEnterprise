@@ -14,6 +14,12 @@ wwwroot/
 *.vspscc
 *.vssscc
 
+# Ignorar archivos de configuración sensibles
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+
+
 # Dotnet-specific settings
 *.ncrunch*
 _ReSharper*/
@@ -47,3 +53,6 @@ yarn-error.log*
 Thumbs.db
 
 # ==============
+UI/ClientApp/angular.json
+UI/appsettings.Development.json
+UI/appsettings.Development.json

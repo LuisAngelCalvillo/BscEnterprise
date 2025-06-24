@@ -40,3 +40,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Ignorar archivos de configuración sensibles
+appsettings.json
+appsettings.Development.json
+appsettings.*.json
+
+environments/

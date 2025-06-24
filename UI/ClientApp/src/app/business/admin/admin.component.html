@@ -1,0 +1,59 @@
+<div class="login-wrapper">
+    <div class="card login-card">
+        <h2 class="text-center">Registrar Usuario</h2>
+
+        <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+            <div class="p-fluid">
+                <div class="field-login">
+                    <label for="email">Correo electrónico</label>
+                    <input id="email" type="email" pInputText formControlName="email"/>
+                    <small class="p-error" *ngIf="email?.touched && email?.invalid">
+                    {{ email?.errors?.['required'] ? 'El correo es obligatorio' : '' }}
+                    {{ email?.errors?.['email'] ? 'Correo no válido' : '' }}
+                    </small>
+                </div>
+
+                <div class="field-login">
+                    <label for="name">Nombre</label>
+                    <input id="name" type="text" pInputText formControlName="name"/>
+                    <small class="p-error" *ngIf="name?.touched && name?.invalid">
+                    {{ name?.errors?.['required'] ? 'El nombre es obligatorio' : '' }}
+                    {{ name?.errors?.['name'] ? 'Nombre no válido' : '' }}
+                    </small>
+                </div>
+
+                <div class="field-login">
+                    <label for="lastName">Apellido</label>
+                    <input id="lastName" type="text" pInputText formControlName="lastName"/>
+                    <small class="p-error" *ngIf="lastName?.touched && lastName?.invalid">
+                    {{ lastName?.errors?.['required'] ? 'El apellido es obligatorio' : '' }}
+                    {{ lastName?.errors?.['lastName'] ? 'Apellido no válido' : '' }}
+                    </small>
+                </div>
+
+                <div class="field-login">
+                    <label for="password">Contraseña</label>
+                    <p-password id="password" formControlName="password" toggleMask ></p-password>
+                    <small class="p-error" *ngIf="password?.touched && password?.invalid">
+                    {{ password?.errors?.['required'] ? 'La contraseña es obligatoria' : '' }}
+                    {{ password?.errors?.['pattern'] ? 'Debe contener min. 8 caracteres, mayúsculas, minúsculas, números y símbolos' : '' }}
+                    </small>
+                </div>
+
+                <div class="field-login">
+                    <label for="roleId">Role</label>
+                    <p-select [options]="roles" formControlName="roleId" optionLabel="name" placeholder="Selecciona un rol" class="w-full md:w-56" />
+                    <small class="p-error" *ngIf="roleId?.touched && roleId?.invalid">
+                    {{ roleId?.errors?.['required'] ? 'La contraseña es obligatoria' : '' }}
+                    {{ roleId?.errors?.['role'] ? 'El role no es valido' : '' }}
+                    </small>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button pButton type="submit" label="Entrar" [disabled]="registerForm.invalid"
+                        class="w-full"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
